@@ -1,0 +1,17 @@
+{
+  "title": "My Todo List",
+  "items": [
+    {
+      "text": "What is application component?"
+    },
+    {
+      "text": "Test pofile has to be \"CBTA\"?"
+    },
+    {
+      "text": "test case, what to chose? script?"
+    },
+    {
+      "text": "Why did not use String as TodoItem?"
+    }
+  ]
+}

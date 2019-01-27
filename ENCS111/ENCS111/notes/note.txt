@@ -1,0 +1,947 @@
+
+    a b c d e f g h
+
+        1   2   3   4   5   6   7   8   9   10  11  ... 17
+assign  1   1   1   1   1   1   1   1   1   1   1   ... 1       n
+new     1   1   1       1               1               1       log n - 扔掉
+copy    0   1   2       4               8               16      n 
+                1   1   1   1   1   1   1   1   1   ...
+
+copy    0       2       4       6       8       10              n^2 
+
+
+for i = 1, i < n, i *= 2 {
+    for j = 0, j < 1, j++ {
+
+    }
+}
+
+2,0 + 2,1 + 2,2 + 2,3 ......... + 2,k -> 2, k+1
+
+k = log2n 
+2^(log2n + 1) -> 2 * 2^log2n -> 2n 
+
+O(1)
+
+作业：
+
+[{( )}{}]
+
+Stack
+push
+pop
+peek
+
+ArrayList
+add()
+pop.....
+remove(list.length - 1)
+
+LinkedList
+add
+push
+pop
+
+addFirst
+addLast
+removeFirst
+removeLast
+getLast
+getFirst
+
+addLast - removeLast
+getLast()
+
+
+伪代码：
+    String formula = ...
+    stack = empty stack
+
+    for each c in formula {
+
+        c is open {
+            stack.push(c)
+        }
+
+        c is close {
+            match = stack.top pair c
+
+            match {
+                stack.pop()
+            } else {
+                return error ...
+            }
+        }
+    }
+
+    return success
+
+
+
+    分析：
+        1.  分析核心
+        2.  分析各种 边界 和 特殊情况
+
+    特殊情况：
+    1.
+        测试用例：]
+        规律：上来就关
+        症状：stack.top 会出现问题
+
+        优化：
+            String formula = ...
+            stack = empty stack
+
+            for each c in formula {
+
+                c is open {
+                    stack.push(c)
+                }
+
+                c is close {
+                    if (stack.isEmpty) {
+                        return error
+                    }
+
+                    match = stack.top pair c
+
+                    match {
+                        stack.pop()
+                    } else {
+                        return error ...
+                    }
+                }
+            }
+
+            return success
+
+    2.
+        测试：(
+        (()
+        规律：走完之后，stack 里还有滞留
+
+        优化：
+            String formula = ...
+            stack = empty stack
+
+            for each c in formula {
+
+                c is open {
+                    stack.push(c)
+                }
+
+                c is close {
+                    if (stack.isEmpty) {
+                        return error
+                    }
+
+                    match = stack.top pair c
+
+                    match {
+                        stack.pop()
+                    } else {
+                        return error ...
+                    }
+                }
+            }
+
+            if (!stack.isEmpty) {
+                return error
+            }
+
+            return success
+
+    3.
+        测试：""
+        String s1 = null;
+        String s1 = "";
+        String s1 = "abc";
+
+        最好的办法：
+
+        if formula == null {
+            return true
+        }
+
+        if formula == "" {
+            return true
+        }
+
+        ...
+
+
+
+ENCS111 1808 3A
+
+最大值问题：
+    问题
+        给一个n个大小的数组，求最大值
+
+    S(n) 原始问题的答案
+        n 个 大小的数组 的最大值
+
+    S(n-1) 小问题的答案
+        前 n - 1 个元素 的最大值
+
+    问自己:
+        如果知道 S(n - 1) ，我能不能求出 S(n)
+        如果知道 前 n-1 个元素的 最大值
+        能不能求出 前 n 个元素的 最大值
+
+    解决方案：
+        前 n 个元素的 最大值 就是
+        (
+            第 n 个元素
+            前 n - 1 个 元素 的最大值
+        ) 的最大值
+
+
+
+2^n
+
+汉诺伊塔问题
+    问题是
+        把 n 个圆板 从 柱子 t1 挪到 柱子 t2，中间可以使用 t3
+
+    S(n, source, target, middle)
+        把 n 个圆板  从 source 挪到 target，可使用 middle 的步骤
+
+    S(n - 1, source, target, middle)
+        把 n - 1 个圆板 从 source 挪到 target，可使用 middle 的步骤
+
+
+    S(n, source, target, middle)
+        S(n - 1, source, middle, target)
+        move(source, target)
+        S(n - 1, middle, target, source)
+
+
+
+2^n
+    问题
+    S(n)
+        2的n次方的值             8   9
+    S(n/2)
+        2 的 n/2 次方的值        4   4.5?....
+
+    问自己
+        S(n/2) -?-> S(n)
+
+    答案：
+        S(n/2) * S(n/2) -> S(n)
+
+
+        S(9) = S(4.5)^2
+
+        S(1) = 2
+
+        S(8) -> S(4)
+        S(9) -> S(4) * S(4) * 2
+
+
+
+
+
+Fib(n)
+    1 1 2 3 5 8 13
+
+    Fib(n) = Fib(n - 1) + Fib(n - 2)
+    Fib(1) = 1
+    Fib(2) = 1
+
+递归 时间复杂度分析
+
+    public double power2(int power) {
+        if(power == 0){
+            return 1;
+        }
+
+        return 2 * power2(power - 1);
+    }
+
+
+    S(n) = 2 x S(n - 1)      for n > 0
+    S(n) = 1                 for n == 0
+
+    T(n) = c + T(n - 1)
+
+    T(n) = c + n
+
+    T(n) = O(cn) = O(n)
+
+
+    public double power2Halved(int power) {
+        if(power == 0){
+            return 2;
+        }
+
+        if (power % 2 == 0){
+            return power2Halved(power / 2) * power2Halved(power / 2);
+        } else {
+            return 2 * power2Halved((power - 1) / 2) * power2Halved((power - 1) / 2);
+        }
+    }
+
+    S(n) = S(n/2) * S(n/2)              n 偶数
+    S(n) = S((n-1)/2) * S((n-1)/2) * 2  n 奇数
+    S(n) = 1                            n == 0
+
+    T(n) = T(n/2) + T(n/2) + c
+    T(n) = c
+
+
+    c + 2^1 c + 2^2 c + 2^3 c ..... + 2^k c
+
+    2^(k+1)c - c
+
+    2^k c
+    k = log n
+
+    n * c
+    O(n)
+
+    public double power2Halved(int power) {
+        if(power == 0){
+            return 2;
+        }
+
+        if (power % 2 == 0){
+            double r = power2Halved(power / 2);
+            return r * r;
+        } else {
+            return 2 * power2Halved((power - 1) / 2) * power2Halved((power - 1) / 2);
+        }
+    }
+
+    T(n) = T(n/2) + c
+    T(n) = c
+
+    T(n) = c + c + c + T(n/8) .....
+        = log n c
+        O(log n)
+
+
+    a + b * c - d
+
+    max = b * c
+    r = a + max - d
+
+
+    stateless
+
+
+    reverse
+
+    public String reverse(String word){
+        if (word == null || word.length() <= 1) {
+            return word;
+        }
+        return reverse(word.substring(1)) + word.charAt(0);
+        // "abcde" -> 'a' "bcde" -> S("bcde") + 'a'
+    }
+
+    T(n) = c + T(n-1)
+
+
+    Array       subarray
+    String      substring
+    List        sublist
+
+    -> 生成一个新的 子序列
+    复制粘贴
+
+    [b, c, d, e]
+
+
+    T(n) = n + T(n - 1)
+    T(n) = n + (n - 1 + T(n - 2))
+    T(n) = n + (n - 1 + (n - 2 + T(n - 3)))
+    T(n) = O(n^2)
+
+    "abcde" 3 -> "cba"
+
+    public String reverse(String word) {
+        return reverse(word, word.length())
+    }
+
+
+    public String reverse(String word, int n){
+        if (n == 0) {
+            return "";
+        }
+        return word.charAt(n - 1) + reverse(word, n - 1) ;
+    }
+
+    Arrays.subarray()
+    list.sublist()
+    string.substring()
+
+    LinkedList<Character>
+
+    "abcd" + "e"
+
+    [a, b, c, d, e]
+
+
+    public String reverse(String word) {
+        return reverse(word, word.length()).toString();
+    }
+
+
+    public StringBuilder reverse(String word, int n){
+        if (n == 0) {
+            return new StringBuilder();
+        }
+        return reverse(word, n - 1).add(0, word.chat(n - 1)) ;
+    }
+
+    T(n) = T(n-1) + c
+
+    public String reverse(String word) {
+        this.word = word
+        reversedChars = new char[word.length()]
+        reverse(word.length());
+        //
+        return somehow convert reversedChars to string..
+    }
+
+    private String word;
+    private char[] reversedChars
+
+    public void reverse(int n){
+        if (n == 0) {
+            return;
+        }
+        reversedChars[reversedChars.size() - n] = word.charAt(n - 1);
+        reverse(n - 1);
+    }
+
+
+
+
+BinarySearch
+
+    [3, 4, 6, 7, 8]
+
+
+    2
+
+    One pass -> O(n)
+    常量降级 -> O(n)
+    倍数降级 -> 2 x T(n/2) -> O(n) -> N/A
+
+    分区
+
+    [3, 4, 6, 7, 8]
+    6 -> 2 ?
+    [3, 4]
+    [7, 8]
+    return
+
+
+    A
+
+    binarySearch(int[] array, int query) {
+        int mid = array.size() / 2
+        array[mid] ? query {
+            case >
+                return binarySearch(array.subarray(0, mid - 1), query)
+        }
+
+
+
+    错！
+
+    B
+    binarySearch(int[] array, int query) {
+        binarySearch(array, query, 0, array.size())
+
+    binarySearch(int[] array, int query, int i, int j) // int from, int to
+        int mid = array.size() / 2
+        array[mid] ? query {
+            case >
+                return binarySearch(array, query, i, mid)
+        }
+
+
+    1.
+        A B 时间复杂度预估
+    2.
+        B 方案：写代码
+        留意 base case
+            binarySearch(int[] array, int query)
+
+
+    BinarySearch
+
+        BinarySearch(A, q)
+            BinarySearchRecur(A, q, 0, A.length())
+
+
+        BinarySearchRecur(A, q, i, j)
+            false                                           i == j -> BSR(0)
+
+            mid = (i + j) / 2;
+
+            true                                            A_mid == q
+            BinarySearchRecur(A, q, i, mid)                 A_mid > q
+            BinarySearchRecur(A, q, mid + 1, j)             A_mid < q
+
+        i, j
+        0, 100
+        51, 100
+        51, 76
+        63, 76
+
+        j = i + 4
+        j = i + 3
+        j = i + 2
+        j = i + 1
+
+        BSR(4)
+            0 4
+            _ _ m _
+            1 5
+            . _ _ m _
+
+            BSR(2)
+            BSR(1)
+
+        BSR(3)
+            0 3
+            _ m _
+            BSR(1)
+
+        BSR(2)
+            0 2
+            1
+            _ m
+            BSR(1)
+            BSR(0)
+
+        BSR(1)
+            0 1
+            0
+            m
+            i, m            -> 0, 0
+            m + 1, j        -> 1, 1
+            BSR(0)
+
+        BSR(0)
+            0 0
+            m
+
+
+
+        Fib(n) = F(n - 1) + F(n - 2)
+
+        F(4)
+            F(3)
+            F(2)
+        F(3)
+            F(2)
+            F(1)
+        F(2)
+            F(1)
+            F(0)
+        F(1)
+            F(0)
+            F(-1)
+
+
+
+    QuickSelect(A, k)
+        A   没有排序
+
+        升序排序之后 第 k 个 数 是多少
+
+        Sort(A) -> select k
+
+        nlogn + c -> nlogn
+
+
+
+        A = 6 7 3 8 4
+        k = 2
+        > 6
+
+
+
+        6 7 3 8 4 9 2 1
+        3
+
+        6 7 3 8 4 9 2 1
+        ^
+        p
+
+
+        p = 0
+        i = 1
+        j = 1
+        A[j] > A[p] -> j++
+        A[j] < A[p] -> swap A[i] A[j], i++, j++
+
+          i
+        6 7 3 8 4 9 2 1
+        p j
+
+          i
+        6 7 3 8 4 9 2 1
+        p   j
+
+            i
+        6 3 7 8 4 9 2 1
+        p     j
+
+            i
+        6 3 7 8 4 9 2 1
+        p       j
+
+              i
+        6 3 4 8 7 9 2 1
+        p         j
+
+              i
+        6 3 4 8 7 9 2 1
+        p           j
+
+                i
+        6 3 4 2 7 9 8 1
+        p             j
+
+                  i
+        6 3 4 2 1 9 8 7
+        p               j
+
+        stop loop
+
+        swap A[p] A[i - 1]
+
+                  i
+        1 3 4 2 6 9 8 7
+        p               j
+
+
+                i
+        6 2 1 3 7 8 4 9         pv | < pv | > pv | ? -> pv | < pv | > pv
+        p           j
+
+
+        _ _ _ _ 6 _ _ _ _
+
+        n 6 m
+
+        n = 4
+        k = 3
+
+        n = 3
+        k = 3
+
+        n = 1
+        k = 3
+
+
+        n = 20
+        k = 79
+
+        _ _ _ _ _ _
+
+
+
+
+
+    QuickSelect
+        最差情况
+            已经升序，已经倒序
+            S(n) -> S(n - 1)
+
+            1 2 3 4 5 6 7 8 9
+            1
+            1 _ _ _ _ _ _ _ _
+
+            O(n^2)
+
+        最好情况 ?
+            第一次迭代的过程中，pivot 就是 第k 个 （不多考虑）
+
+            一半一半
+            S(n) -> S(n / 2)
+
+            T(n)
+                = T_partition(n) + T(n / 2)
+                = O(n) + T(n/2)
+                = cn + T(n/2)
+
+            T(n) = cn + T(n/2)
+            T(n) = cn + cn/2 + T(n/4)
+            T(n) = cn + cn/2 + cn/4 + T(n/8)
+            T(n) = cn + cn/2 + cn/4 + ....     c_2
+
+                 = 2cn
+                 = O(n)
+
+    MergeSort
+        A ....
+
+        原始问题：
+            对 A 排序
+
+        1 拆出来的问题是：
+            对 A 的左半边 排序
+
+            对 A 的右半边 排序
+
+        2 的问题：
+            对 1 个数 进行排序
+
+        2 的答案：
+            就是它本身
+
+        3 的
+            如果 我拿到 左半边 已排序的序列 （对 A 的左半边 排序 的 答案）
+            和 右半边 已排序的序列
+
+            1 2 3 4
+
+            O(n)
+
+            1 2 3 4 5 6
+
+
+
+
+
+    MergeSort(A)
+        MergeSortRecur(A, 0, n)
+
+    MergeSortRecur(A, i, j)
+        mid = (i + j) / 2                   c
+        r1 = MergeSortRecur(A, i, mid)      T(n/2)
+        r2 = MergeSortRecur(A, mid, j)      T(n/2)
+        r = Merge(r1, r2)
+
+    Merge(q1, q2)
+        ...
+
+
+    T(n) = c + T(n/2) + T(n/2) + T_merge(n)
+
+    T_merge(n) = O(n)
+
+    T(n) = cn + T(n/2) + T(n/2)
+
+
+
+QuickSort
+
+     6 7 3 8 4 9 2 1
+
+     _ _ _ _ 6 _ _ _
+
+
+
+空间 换时间
+    Fib(n) = Fib(n - 1) + Fib(n - 2)
+
+    Fib(n) -> Fib_n
+
+    Fic(n) -> Fib_n, Fib_n-1
+
+
+    Fib_n = Fib_n-1 + Fib_n-2
+
+
+    Fic(n) {
+        Fic(n - 1) -> Fib_n-1, Fib_n-2
+
+        Fib_n = Fib_n-1 + Fib_n-2
+
+
+    } -> Fib_n, Fib_n-1
+
+
+    Fic(1) -> 1, 0
+
+    public int[] fic(n) {
+
+    }
+
+
+    2 3 3 6 6 2 4 2 1 1
+    k
+
+
+    nlogn
+
+    n
+
+        0 1 2 3 4
+        1 2 3 4 6
+        _ _ _ _ _
+        0 0 0 0 0
+
+    1 1 2 2 2 3 3 4 6 6
+
+    Space(k)
+
+
+Set
+    ADT
+
+        方法：
+            add(e)
+            contains(e)
+            iter set
+        特性：
+            放进去的元素，不要求保留顺序
+            放进去的元素，不能重复 (如果没有这个要求，Bag (Collection ??))
+
+    实际需求：
+        签到名单 vs 明星签名墙
+
+    例子
+        {1, 2} + 2 -> {1, 2}
+
+    Set ?
+        Set<String>
+
+    Set {
+        LinkedList list
+
+        add(e) {
+            list.contains(e) ? {
+
+            } else {
+                list.add(e)
+            }
+        }
+    }
+
+    add() time ? O(n)
+
+Hash
+    是什么？
+        非常重要的基础数据结构
+        array -> [, , , , , ]
+        link -> [ - ] -> [  ]
+        hash -> [, , , , , ]
+
+    Hash Function
+        是什么
+            hash function -> hashCode / hashValue
+            hash function 算生成八字
+            针对一个数据 计算出来一个值
+        特性：
+            1.  hash function 对于同样的数据 必须算出 同样的结果
+
+
+    Collision 冲突
+        (hash value % array size) 会出现 collision
+
+        解决冲突
+
+        1.  往后铺
+        2.  array 里面有 list
+
+
+
+    Hash Function 要求
+        1.  必须：
+            hash function 对于同样的数据 必须算出 同样的结果
+
+        2.  尽量：
+            hash function 算出来的值 尽可能的 分散 （不要都一样）
+            错：  10, 10, 10, 10, 10 % any -> same
+            对：  10, 20 ,30, 40, 50
+
+        3.  尽量：
+            hash function 算出来的值 尽可能的 诡异
+            错：  10, 20, 30, 40, 50 % 10 -> 0
+            对：  7,  14, 21, 28, 35 % 10 -> 7, 4, 1, 8, 5
+
+        4.  尽量：
+            hash function 算出来的值的范围 尽可能的 广
+            错：  1 ~ 10 % 20 -> 1 ~ 10
+            对：  1 ~ 1000 % 20 -> 0 ~ 10
+
+        目的：
+            每个一个元素 放进去的时候，尽可能的 平均概率 分散放入
+
+    扩容
+        问题:
+            n = 1000
+            capacity = 10
+
+        解决方案：
+            当 n 接近 capacity 的时候
+            hash table <array> 就要扩容
+
+
+    步骤中的重点
+        伪代码：
+            h = e.hashValue()
+            index = h % size
+            list = table[index]
+            iter item in list {
+                if item.equals(e)
+            }
+        重要环节：
+            hashValue()     - 元素自己要提供
+            %
+            equals()        - 元素自己要提供
+
+
+
+
+
+Map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

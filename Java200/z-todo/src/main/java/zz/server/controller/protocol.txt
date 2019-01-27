@@ -1,0 +1,17 @@
+User add
+
+    ->
+        action: user add
+        data:
+        {
+            username: string,
+            password: string
+        }
+
+    <-
+        status: success / failure
+        data: null
+
+Todo Get All
+
+   ->
